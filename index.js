@@ -22,12 +22,33 @@ async function run(){
 
         const database = client.db("SD_Travel_Agency");
         const offersCollection = database.collection('offers');
+        const bookingCollection = database.collection('bookings')
 
+        // get all offers api 
         app.get('/offers', async (req, res)=>{
             const cursor = offersCollection.find({});
             const result = await cursor.toArray();
 
             res.send(result);
+        })
+
+        //get api one offer by id
+        app.get('/offer/:id', async (req, res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await offersCollection.findOne(query);
+
+            res.send(result);
+
+        })
+
+        //booking api 
+        app.post('/booking', async (req, res) =>{
+            booking = req.body;
+
+            const result = await bookingCollection.insertOne(booking);
+
+            res.json(result)
         })
 
 
