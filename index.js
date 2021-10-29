@@ -42,6 +42,16 @@ async function run(){
 
         })
 
+        //get booking offer api
+        app.post('/myOrder', async(req, res) =>{
+            const userId = req.body;
+            // const query = {};
+            const result = await bookingCollection.find(userId).toArray();
+
+
+            res.send(result)
+        })
+
         //booking api 
         app.post('/booking', async (req, res) =>{
             booking = req.body;
@@ -50,7 +60,14 @@ async function run(){
 
             res.json(result)
         })
-
+        //delete booking api
+        app.delete('/deleteBooking/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await bookingCollection.deleteOne(query);
+            
+            res.json(result)
+        })
 
     }finally{
         // await client.close();
